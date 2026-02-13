@@ -1,8 +1,15 @@
-# app/seed.py
 from werkzeug.security import generate_password_hash
+from sqlalchemy import inspect
 
 def seed_if_empty(db, Clinic, User):
-    # if at least one clinic exists, do nothing
+    # If tables aren't created yet, do nothing (migrations will create them first)
+    try:
+        inspector = inspect(db.engine)
+        if "clinics" not in inspector.get_table_names():
+            return
+    except Exception:
+        return
+
     if db.session.query(Clinic).first():
         return
 
@@ -15,7 +22,7 @@ def seed_if_empty(db, Clinic, User):
         default_language="it",
     )
     db.session.add(clinic)
-    db.session.flush()  # get clinic.id without full commit
+    db.session.flush()
 
     admin = User(
         clinic_id=clinic.id,
