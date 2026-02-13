@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Follow-Ups{% endblock %}
+{% block content %}
+<h3 style="margin-bottom:14px;">Follow-Ups</h3>
+<div class="grid-2">
+  <div class="card">
+    <h5>Due Today / Overdue ({{ today }})</h5>
+    <ul>
+      {% for lead in due_leads %}
+        <li><a href="{{ url_for('leads.lead_detail', lead_id=lead.id) }}">{{ lead.first_name }} {{ lead.last_name }}</a> - {{ lead.next_action_date }}</li>
+      {% else %}
+        <li>No due follow-ups.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h5>Upcoming</h5>
+    <ul>
+      {% for lead in upcoming_leads %}
+        <li><a href="{{ url_for('leads.lead_detail', lead_id=lead.id) }}">{{ lead.first_name }} {{ lead.last_name }}</a> - {{ lead.next_action_date }}</li>
+      {% else %}
+        <li>No upcoming follow-ups.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

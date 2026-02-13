@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}New Quote{% endblock %}
+{% block content %}
+<div class="card">
+  <h3>Create Quote</h3>
+  <form method="post" class="row-gap">
+    {{ form.hidden_tag() }}
+    <div class="grid-3">
+      <div>{{ form.lead_id.label(class='form-label') }}{{ form.lead_id(class='form-select') }}</div>
+      <div>{{ form.currency.label(class='form-label') }}{{ form.currency(class='form-select') }}</div>
+      <div>{{ form.item_label.label(class='form-label') }}{{ form.item_label(class='form-control') }}</div>
+      <div>{{ form.quantity.label(class='form-label') }}{{ form.quantity(class='form-control') }}</div>
+      <div>{{ form.unit_price.label(class='form-label') }}{{ form.unit_price(class='form-control') }}</div>
+    </div>
+    <div>{{ form.notes.label(class='form-label') }}{{ form.notes(class='form-control', rows='3') }}</div>
+    <div>{{ form.submit(class='btn btn-primary') }}</div>
+  </form>
+</div>
+{% endblock %}

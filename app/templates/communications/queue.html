@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Call Queue{% endblock %}
+{% block content %}
+<h3 style="margin-bottom:14px;">Call Center Queue</h3>
+<form method="post" action="{{ url_for('communications.assign_next') }}" style="margin-bottom:14px;">
+  <button class="btn btn-primary">Assign Next Lead (Round Robin)</button>
+</form>
+<div class="grid-3">
+  <div class="card">
+    <h5>New Leads</h5>
+    <ul>
+      {% for lead in new_leads %}
+      <li><a href="{{ url_for('leads.lead_detail', lead_id=lead.id) }}">{{ lead.first_name }} {{ lead.last_name }}</a></li>
+      {% else %}
+      <li>No new leads.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h5>Follow-ups Due</h5>
+    <ul>
+      {% for lead in followups %}
+      <li><a href="{{ url_for('leads.lead_detail', lead_id=lead.id) }}">{{ lead.first_name }} {{ lead.last_name }}</a> - {{ lead.next_action_date }}</li>
+      {% else %}
+      <li>No follow-ups due.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h5>Missed Callbacks</h5>
+    <ul>
+      {% for call in missed_calls %}
+      <li>{{ call.to_number }} - {{ call.status }} - {{ call.created_at }}</li>
+      {% else %}
+      <li>No missed calls.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

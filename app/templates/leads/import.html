@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Import Leads{% endblock %}
+{% block content %}
+<div class="card">
+  <h3>Import Leads</h3>
+  <p class="text-muted">CSV/XLSX columns: first_name,last_name,email,phone,source,status,utm_source,gclid,next_action_date</p>
+  <form method="post" enctype="multipart/form-data" class="row-gap">
+    {{ form.hidden_tag() }}
+    <div>{{ form.file.label(class='form-label') }}{{ form.file(class='form-control') }}</div>
+    <div>{{ form.submit(class='btn btn-primary') }}</div>
+  </form>
+</div>
+{% endblock %}

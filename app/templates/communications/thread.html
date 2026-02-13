@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Conversation {{ conversation.id }}{% endblock %}
+{% block content %}
+<h3 style="margin-bottom:14px;">Conversation #{{ conversation.id }} ({{ conversation.channel }})</h3>
+<div class="grid-2">
+  <div class="card">
+    <h5>Messages</h5>
+    <div class="row-gap" style="max-height:420px;overflow:auto;">
+      {% for msg in messages %}
+      <div class="card" style="background:{% if msg.direction == 'outbound' %}#e8f2ff{% else %}var(--surface-alt){% endif %};">
+        <small>{{ msg.created_at }} | {{ msg.direction }}</small>
+        <div>{{ msg.body }}</div>
+      </div>
+      {% else %}
+      <div>No messages yet.</div>
+      {% endfor %}
+    </div>
+    <form method="post" class="row-gap" style="margin-top:12px;">
+      {{ message_form.hidden_tag() }}
+      <input class="form-control" name="to_number" placeholder="+355...">
+      {{ message_form.body(class='form-control', rows='3') }}
+      {{ message_form.submit(class='btn btn-primary') }}
+    </form>
+  </div>
+  <div class="card">
+    <h5>Calls</h5>
+    <form method="post" class="row-gap" style="margin-bottom:12px;">
+      {{ call_form.hidden_tag() }}
+      {{ call_form.to_number(class='form-control', placeholder='+355...') }}
+      {{ call_form.submit(class='btn btn-success') }}
+    </form>
+    <ul>
+      {% for call in calls %}
+      <li>
+        {{ call.created_at }} | {{ call.status }} | {{ call.from_number }} -> {{ call.to_number }}
+        <form method="post" action="{{ url_for('communications.save_disposition', call_id=call.id) }}" class="row-gap" style="margin-top:8px;">
+          {{ disposition_form.hidden_tag() }}
+          {{ disposition_form.outcome(class='form-select') }}
+          {{ disposition_form.notes(class='form-control', rows='2') }}
+          {{ disposition_form.followup_at(class='form-control') }}
+          {{ disposition_form.submit(class='btn btn-secondary') }}
+        </form>
+      </li>
+      {% else %}
+      <li>No calls.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

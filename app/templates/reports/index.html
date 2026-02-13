@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h3 style="margin-bottom:14px;">Reports</h3>
+<div class="kpi-grid" style="margin-bottom:14px;">
+  <div class="kpi-card"><div class="kpi-title">Total Leads</div><div class="kpi-value">{{ total_leads }}</div></div>
+  <div class="kpi-card"><div class="kpi-title">Won Leads</div><div class="kpi-value">{{ won_leads }}</div></div>
+  <div class="kpi-card"><div class="kpi-title">Conversion Rate</div><div class="kpi-value">{{ conversion_rate }}%</div></div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <h5>Leads by Source</h5>
+    <ul>
+      {% for source, count in leads_by_source %}
+        <li>{{ source }}: {{ count }}</li>
+      {% else %}
+        <li>No data.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h5>Revenue by Month</h5>
+    <ul>
+      {% for month, amount in monthly_revenue %}
+        <li>{{ month }}: {{ '%.2f'|format(amount) }} EUR</li>
+      {% else %}
+        <li>No paid revenue yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

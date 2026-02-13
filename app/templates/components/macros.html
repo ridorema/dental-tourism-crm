@@ -1,0 +1,38 @@
+{% macro app_button(label, href=None, style='primary', btn_type='button') %}
+  {% if href %}
+    <a href="{{ href }}" class="btn btn-{{ style }}">{{ label }}</a>
+  {% else %}
+    <button type="{{ btn_type }}" class="btn btn-{{ style }}">{{ label }}</button>
+  {% endif %}
+{% endmacro %}
+
+{% macro status_badge(value) %}
+  {% set normalized = (value or '')|lower %}
+  <span class="badge status-{{ normalized|replace(' ', '-') }}">{{ value }}</span>
+{% endmacro %}
+
+{% macro kpi_card(title, value, subtitle='') %}
+<div class="kpi-card">
+  <div class="kpi-title">{{ title }}</div>
+  <div class="kpi-value">{{ value }}</div>
+  {% if subtitle %}<div class="kpi-subtitle">{{ subtitle }}</div>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro empty_state(title, text) %}
+<div class="empty-state">
+  <h5>{{ title }}</h5>
+  <p>{{ text }}</p>
+</div>
+{% endmacro %}
+
+{% macro modal(id, title, body) %}
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content glass">
+      <div class="modal-header"><h5 class="modal-title">{{ title }}</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">{{ body }}</div>
+    </div>
+  </div>
+</div>
+{% endmacro %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% import 'components/macros.html' as ui %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h3 style="margin-bottom: 14px;">{{ kpis.clinic.name }} Dashboard</h3>
+<div class="kpi-grid" style="margin-bottom:14px;">
+  {{ ui.kpi_card('New Leads (7d)', kpis.new_leads_7d) }}
+  {{ ui.kpi_card('Active Leads', kpis.active_leads) }}
+  {{ ui.kpi_card('Quotes Sent', kpis.quotes_sent) }}
+  {{ ui.kpi_card('Follow-ups Due', kpis.due_followups) }}
+  {{ ui.kpi_card('Revenue This Month', (kpis.revenue_this_month|string) ~ ' ' ~ kpis.currency) }}
+  {{ ui.kpi_card('Outstanding', (kpis.outstanding_balance|string) ~ ' ' ~ kpis.currency) }}
+  {{ ui.kpi_card('Calls Today', kpis.calls_today, 'Answer rate ' ~ kpis.answer_rate ~ '%') }}
+  {{ ui.kpi_card('Messages Outbound', kpis.messages_today, 'Avg call ' ~ kpis.avg_duration ~ 's') }}
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h5>Funnel</h5>
+    <div class="row-gap">
+      <div>New: <strong>{{ kpis.funnel.new }}</strong></div>
+      <div>Quoted: <strong>{{ kpis.funnel.quoted }}</strong></div>
+      <div>Accepted: <strong>{{ kpis.funnel.accepted }}</strong></div>
+      <div>Completed: <strong>{{ kpis.funnel.completed }}</strong></div>
+    </div>
+  </div>
+  <div class="card">
+    <h5>Quick Actions</h5>
+    <div class="row-gap">
+      <a class="btn btn-primary" href="{{ url_for('leads.create_lead') }}">New Lead</a>
+      <a class="btn btn-secondary" href="{{ url_for('communications.queue') }}">Open Call Queue</a>
+      <a class="btn btn-secondary" href="{{ url_for('communications.inbox') }}">Open Inbox</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

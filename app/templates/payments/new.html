@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}New Payment{% endblock %}
+{% block content %}
+<div class="card">
+  <h3>Record Payment</h3>
+  <form method="post" class="row-gap">
+    {{ form.hidden_tag() }}
+    <div class="grid-3">
+      <div>{{ form.quote_id.label(class='form-label') }}{{ form.quote_id(class='form-select') }}</div>
+      <div>{{ form.amount.label(class='form-label') }}{{ form.amount(class='form-control') }}</div>
+      <div>{{ form.currency.label(class='form-label') }}{{ form.currency(class='form-select') }}</div>
+      <div>{{ form.method.label(class='form-label') }}{{ form.method(class='form-select') }}</div>
+      <div>{{ form.due_date.label(class='form-label') }}{{ form.due_date(class='form-control') }}</div>
+    </div>
+    <div>{{ form.submit(class='btn btn-primary') }}</div>
+  </form>
+</div>
+{% endblock %}

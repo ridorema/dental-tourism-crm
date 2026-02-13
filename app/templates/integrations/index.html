@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Integrations{% endblock %}
+{% block content %}
+<div class="grid-2">
+  <div class="card">
+    <h3>Google Ads Offline Conversions</h3>
+    <p>Export CSV and upload in Google Ads.</p>
+    <a class="btn btn-primary" href="{{ url_for('integrations.google_ads_export') }}">Download CSV</a>
+    <hr>
+    <h5>Recent Conversion Events</h5>
+    <ul>
+      {% for c in conversions %}
+      <li>{{ c.conversion_time }} | lead {{ c.lead_id }} | {{ c.conversion_name }} | gclid={{ c.gclid or '-' }}</li>
+      {% else %}
+      <li>No conversion events yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h3>WordPress/Elementor Embed Snippet</h3>
+    <p>Paste this into HTML widget or custom form page.</p>
+    <textarea class="form-control" rows="18" readonly>{{ snippet }}</textarea>
+  </div>
+</div>
+{% endblock %}

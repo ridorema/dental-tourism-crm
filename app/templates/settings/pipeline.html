@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Pipeline Settings{% endblock %}
+{% block content %}
+<div class="grid-2">
+  <div class="card">
+    <h3>Add Stage</h3>
+    <form method="post" class="row-gap">
+      {{ form.hidden_tag() }}
+      <div>{{ form.name.label(class='form-label') }}{{ form.name(class='form-control') }}</div>
+      <div>{{ form.stage_key.label(class='form-label') }}{{ form.stage_key(class='form-control') }}</div>
+      <div>{{ form.submit(class='btn btn-primary') }}</div>
+    </form>
+  </div>
+  <div class="card">
+    <h3>Current Stages</h3>
+    <ul>
+      {% for stage in stages %}
+        <li>#{{ stage.sort_order }} {{ stage.name }} ({{ stage.stage_key }})</li>
+      {% else %}
+        <li>No stages configured.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

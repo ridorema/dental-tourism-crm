@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Softphone{% endblock %}
+{% block content %}
+<div class="card">
+  <h3>Softphone (Stub Mode)</h3>
+  <p>This panel is wired for future SIP/WebRTC integration.</p>
+  <div class="grid-3">
+    <input class="form-control" id="dial-number" placeholder="+355...">
+    <button class="btn btn-success" onclick="alert('Stub call init hook')">Dial</button>
+    <button class="btn btn-secondary" onclick="alert('Stub mute toggle')">Mute</button>
+    <button class="btn btn-danger" onclick="alert('Stub hangup hook')">Hang Up</button>
+  </div>
+  <hr>
+  <p class="text-muted">Future SIP.js hooks: token from <code>/api/v1/voice/token</code>, then init WebRTC session.</p>
+</div>
+{% endblock %}

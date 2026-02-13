@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# Environment files / secrets
+.env
+.env.*
+*.key
+
+# Flask
+instance/
+*.log
+
+# DB (keep if you want, but usually ignore)
+*.sqlite3
+*.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Migrations note:
+# Usually DO commit migrations/ (DO NOT ignore)

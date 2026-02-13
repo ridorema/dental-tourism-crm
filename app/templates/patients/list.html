@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import 'components/macros.html' as ui %}
+{% block title %}Patients{% endblock %}
+{% block content %}
+<h3 style="margin-bottom:14px;">Patients</h3>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Name</th><th>Country</th><th>Language</th><th></th></tr></thead>
+  <tbody>
+    {% for patient in patients %}
+    <tr>
+      <td>{{ patient.first_name }} {{ patient.last_name }}</td>
+      <td>{{ patient.country }}</td>
+      <td>{{ patient.language }}</td>
+      <td><a href="{{ url_for('patients.patient_detail', patient_id=patient.id) }}">Open</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No patients yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="grid-2">
+  <div class="card">
+    <h3>Team Users</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <form method="post" action="{{ url_for('users.update_role', user_id=user.id) }}" style="display:flex;gap:8px;">
+                <select class="form-select" name="role">
+                  {% for r in ['admin','agent','doctor','finance'] %}
+                  <option value="{{ r }}" {% if user.role == r %}selected{% endif %}>{{ r }}</option>
+                  {% endfor %}
+                </select>
+                <button class="btn btn-secondary">Save</button>
+              </form>
+            </td>
+            <td>{{ 'active' if user.is_active_user else 'disabled' }}</td>
+            <td>
+              <form method="post" action="{{ url_for('users.toggle_user', user_id=user.id) }}" style="display:inline"><button class="btn btn-secondary">Toggle</button></form>
+              <a class="btn btn-primary" href="{{ url_for('users.reset_password', user_id=user.id) }}">Reset Password</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No users.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Create User</h3>
+    <form method="post" class="row-gap">
+      {{ form.hidden_tag() }}
+      <div>{{ form.full_name.label(class='form-label') }}{{ form.full_name(class='form-control') }}</div>
+      <div>{{ form.email.label(class='form-label') }}{{ form.email(class='form-control') }}</div>
+      <div>{{ form.role.label(class='form-label') }}{{ form.role(class='form-select') }}</div>
+      <div>{{ form.password.label(class='form-label') }}{{ form.password(class='form-control') }}</div>
+      <div>{{ form.submit(class='btn btn-primary') }}</div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Integration Settings{% endblock %}
+{% block content %}
+<div class="grid-2">
+  <div class="card">
+    <h3>Provider Credentials</h3>
+    <form method="post" class="row-gap">
+      {{ form.hidden_tag() }}
+      <div>{{ form.provider_type.label(class='form-label') }}{{ form.provider_type(class='form-select') }}</div>
+      <div>{{ form.encrypted_json.label(class='form-label') }}{{ form.encrypted_json(class='form-control') }}</div>
+      <div>{{ form.active() }} {{ form.active.label }}</div>
+      <div>{{ form.submit(class='btn btn-primary') }}</div>
+    </form>
+  </div>
+  <div class="card">
+    <h3>Webhook URLs</h3>
+    <ul>
+      <li>{{ webhook_base }}/meta-leads</li>
+      <li>{{ webhook_base }}/whatsapp</li>
+      <li>{{ webhook_base }}/voice</li>
+    </ul>
+    <hr>
+    <h5>Saved Credentials</h5>
+    <ul>
+      {% for c in creds %}
+      <li>{{ c.provider_type }} | active={{ c.active }} | {{ c.created_at }}</li>
+      {% else %}
+      <li>No credentials yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% import 'components/macros.html' as ui %}
+{% block title %}Lead {{ lead.id }}{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+  <h3>{{ lead.first_name }} {{ lead.last_name }}</h3>
+  <div style="display:flex;gap:8px;">
+    <a class="btn btn-secondary" href="{{ url_for('communications.lead_timeline', lead_id=lead.id) }}">Unified Timeline</a>
+    {% if not lead.converted_to_patient %}
+      <form method="post" action="{{ url_for('leads.convert', lead_id=lead.id) }}">{{ note_form.csrf_token }}<button class="btn btn-success">Convert to Patient</button></form>
+    {% endif %}
+    <form method="post" action="{{ url_for('leads.delete_lead', lead_id=lead.id) }}">{{ note_form.csrf_token }}<button class="btn btn-danger">Archive</button></form>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="row-gap">
+      <div><strong>Status:</strong> {{ ui.status_badge(lead.status) }}</div>
+      <div><strong>Next Action:</strong> {{ lead.next_action_date or '-' }}</div>
+      <div><strong>Country:</strong> {{ lead.country }} | <strong>Language:</strong> {{ lead.language }}</div>
+      <div><strong>Notes:</strong> {{ lead.notes or '-' }}</div>
+    </div>
+  </div>
+  <div class="card">
+    <h5>Status Update</h5>
+    <form method="post" class="row-gap">
+      {{ status_form.hidden_tag() }}
+      {{ status_form.status(class='form-select') }}
+      {{ status_form.submit(class='btn btn-secondary') }}
+    </form>
+  </div>
+</div>
+
+<div class="grid-2" style="margin-top:14px;">
+  <div class="card">
+    <h5>Add Note</h5>
+    <form method="post" class="row-gap">
+      {{ note_form.hidden_tag() }}
+      {{ note_form.details(class='form-control', rows='3') }}
+      {{ note_form.submit(class='btn btn-primary') }}
+    </form>
+    <hr>
+    <h5>Set Follow-up</h5>
+    <form method="post" class="row-gap">
+      {{ follow_up_form.hidden_tag() }}
+      {{ follow_up_form.next_action_date(class='form-control') }}
+      {{ follow_up_form.submit(class='btn btn-secondary') }}
+    </form>
+  </div>
+  <div class="card">
+    <h5>Timeline</h5>
+    <ul class="timeline">
+      {% for a in activities %}
+      <li><small>{{ a.created_at }}</small><br><strong>{{ a.action }}</strong><br>{{ a.details }}</li>
+      {% else %}
+      <li>No activity yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="card" style="margin-top:14px;">
+  <h5>WhatsApp Templates (Italian)</h5>
+  {% for label, text in whatsapp_templates.items() %}
+    <label class="form-label" style="margin-top:8px;">{{ label|title }}</label>
+    <textarea class="form-control" rows="2" readonly>{{ text }}</textarea>
+  {% endfor %}
+</div>
+{% endblock %}

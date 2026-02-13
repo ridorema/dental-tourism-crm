@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% import 'components/macros.html' as ui %}
+{% block title %}Leads{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+  <h3>Leads</h3>
+  <div style="display:flex;gap:8px;">
+    <a href="{{ url_for('leads.follow_ups') }}" class="btn btn-secondary">Follow-ups</a>
+    <a href="{{ url_for('leads.import_leads') }}" class="btn btn-secondary">Import</a>
+    <a href="{{ url_for('leads.create_lead') }}" class="btn btn-primary">New Lead</a>
+  </div>
+</div>
+<form method="get" class="grid-3" style="margin-bottom:14px;">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search name/email/phone">
+  <select class="form-select" name="status">
+    <option value="">All statuses</option>
+    {% for s in ['new','contacted','qualified','quoted','accepted','completed','lost'] %}
+      <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-secondary">Filter</button>
+</form>
+
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Name</th><th>Status</th><th>Source</th><th>Next Action</th><th>Owner</th><th></th></tr></thead>
+  <tbody>
+    {% for lead in leads %}
+    <tr>
+      <td>{{ lead.first_name }} {{ lead.last_name }}</td>
+      <td>{{ ui.status_badge(lead.status) }}</td>
+      <td>{{ lead.source }}</td>
+      <td>{{ lead.next_action_date or '-' }}</td>
+      <td>{{ lead.assigned_agent_id or '-' }}</td>
+      <td><a href="{{ url_for('leads.lead_detail', lead_id=lead.id) }}">Open</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">{{ ui.empty_state('No leads', 'Connect website and ads to start capturing leads.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
