@@ -24,14 +24,25 @@ def seed_if_empty(db, Clinic, User):
     db.session.add(clinic)
     db.session.flush()
 
-    admin = User(
-        clinic_id=clinic.id,
-        email="admin@demo.com",
-        first_name="Admin",
-        last_name="Demo",
-        role="admin",
-        password_hash=generate_password_hash("Admin12345!"),
-        is_active=True,
-    )
+    # Keep seed compatible with both legacy and current User schemas.
+    user_kwargs = {
+        "clinic_id": clinic.id,
+        "email": "admin@demo.com",
+        "role": "admin",
+        "password_hash": generate_password_hash("Admin12345!"),
+    }
+
+    if hasattr(User, "full_name"):
+        user_kwargs["full_name"] = "Admin Demo"
+    else:
+        user_kwargs["first_name"] = "Admin"
+        user_kwargs["last_name"] = "Demo"
+
+    if hasattr(User, "is_active_user"):
+        user_kwargs["is_active_user"] = True
+    elif hasattr(User, "is_active"):
+        user_kwargs["is_active"] = True
+
+    admin = User(**user_kwargs)
     db.session.add(admin)
     db.session.commit()
