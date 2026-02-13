@@ -25,7 +25,6 @@ def create_app(config_object="app.config.Config"):
     login_manager.init_app(app)
 
     from .cli import register_cli
-
     register_cli(app)
 
     app.register_blueprint(auth_bp)
@@ -45,13 +44,11 @@ def create_app(config_object="app.config.Config"):
     def health():
         return {"status": "ok"}
 
-
+    # ✅ Auto-seed only if empty
     with app.app_context():
-    from app.extensions import db
-    from app.models import Clinic, User
-    from app.seed import seed_if_empty
-
-    seed_if_empty(db, Clinic, User)
+        from .models import Clinic, User
+        from .seed import seed_if_empty
+        seed_if_empty(db, Clinic, User)
 
     return app
 
@@ -59,6 +56,3 @@ def create_app(config_object="app.config.Config"):
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
-
-
-
