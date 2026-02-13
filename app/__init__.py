@@ -45,6 +45,14 @@ def create_app(config_object="app.config.Config"):
     def health():
         return {"status": "ok"}
 
+
+    with app.app_context():
+    from app.extensions import db
+    from app.models import Clinic, User
+    from app.seed import seed_if_empty
+
+    seed_if_empty(db, Clinic, User)
+
     return app
 
 
@@ -53,9 +61,4 @@ def load_user(user_id):
     return db.session.get(User, int(user_id))
 
 
-with app.app_context():
-    from app.extensions import db
-    from app.models import Clinic, User
-    from app.seed import seed_if_empty
 
-    seed_if_empty(db, Clinic, User)
